@@ -1,14 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
-import fakeData from '../../fakeData';
 import Product from '../Product/Product';
 
 const ProductDetail = () => {
     const {productKey}= useParams();
-    const product = fakeData.find(pd => pd.key===productKey);
+    const [product, setProduct] = useState({});
+
+    useEffect(()=>{
+        fetch('https://safe-woodland-31836.herokuapp.com/product/'+productKey)
+        .then(response =>response.json())
+        .then(data =>setProduct(data))
+    },[productKey])
     return (
         <div>
-            <h1> {productKey} Product detail coming soon....</h1>
+            <h1> {productKey} Product details:</h1>
             <Product showAddToCart={false} product={product}></Product>
         </div>
     );
